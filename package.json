@@ -1,0 +1,13 @@
+{
+  "name": "CMPE295",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "angular-chart.js": "^0.8.6",
+    "ejs": "*",
+    "express": "3.2.6"
+  }
+}

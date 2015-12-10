@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+  <title>Comparison System</title>
+  
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.min.css' />
+    
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+      <script src="../public/javascripts/angular.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="../public/stylesheets/bootstrap.min.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="../public/stylesheets/dashboard.css" rel="stylesheet" />
+
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../public../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="../public/javascripts/ie-emulation-modes-warning.js"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <link rel="stylesheet" href="../public/stylesheets/ng-table.min.css" />
+  <script src="../public/javascripts/ng-table.min.js"></script>
+
+
+ 
+ 
+  
+  <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js" ></script>
+
+  <script src = "http://cdn.zingchart.com/zingchart.min.js" ></script>
+
+  <script src = "http://cdn.zingchart.com/angular/zingchart-angularjs.js" ></script>
+  
+  
+  <style>
+    header {
+      background-color:blue;
+      color:white;
+      text-align:center;
+      padding:5px;	 
+    }
+  </style>
+
+</head>
+
+<body  ng-controller="DashboardCtrl">
+
+  <header>
+    <h1>Dashboard</h1>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-sm-9 sidebar">
+        <ul class="nav nav-sidebar" ng-init="tab = 0" ng-init= "canntWrite = 'false'" ng-init = "platform = 'hadoop'" >
+          <li ng-class="{ active:tab === 0 }"><a href ng-click="tab = 0;home()">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li ng-class="{ active:tab === 1 }"><a href ng-click="tab = 1; platform = 'hadoop'">Traditional Architecture</a>
+          </li>
+          <li ng-class="{ active:tab === 2 }"><a href ng-click="tab = 2; platform = 'spark'">In-memory Architecture</a>
+          </li>
+          <li ng-class="{ active:tab === 3 }"><a href ng-click="tab = 3; compare()">Comparison</a>
+          </li>
+        </ul>
+      </div>
+    
+      <div ng-show="tab === 0" class="col-sm-9 col-sm-offset-3">
+        <h1 class="page-header">Enhancing Big Data Performance Through In-memory Architecture</h1>
+        <h3>Advisor : Professor Hungwen Li</h3>
+        <br>
+        <br>
+        <label>Chen Gu, chengu907@gmail.com</label><br>
+        <label>Feng Chen, flora9chen@gmail.com</label><br>
+        <label>Jie Lei, leijie1221@gmail.com</label><br>
+        <label>Wei Sun, weisun786@gmail.com</label>
+      </div>
+      
+      <div ng-show="tab === 1" class="col-sm-9 col-sm-offset-3">
+        <h1 class="page-header">Traditional Architecture Processing</h1>
+        <h3>Algorithm:</h3>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9 ">
+            <label class="radio-inline">
+            <input type="radio" name="hdRadio"  value="wc" ng-model = "algorithm" checked = "checked"> WordCount
+            </label>
+          </div>   
+          <div class="col-sm-offset-3 col-sm-9 ">
+            <label class="radio-inline">
+            <input type="radio" name="hdRadio" value="pr" ng-model = "algorithm" > PageRank
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-3">
+          <button type="button" class="btn btn-primary" ng-click="run()">Run</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-10 ">
+          <h3>Results:</h3>
+             <label for="ioNumH">IONumber:</label>
+             <p>{{hadoop.ioNum}}</p>
+             <label for="proTimeH">Processing Time:</label>
+             <p>{{hadoop.proTime}}</p>
+          </div>
+        </div>
+      </div>  
+      
+      <div ng-show="tab === 2" class="col-sm-9 col-sm-offset-3 ">
+        <h1 class="page-header">In-memory Architecture Processing</h1>
+        <h3>Algorithm:</h3>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9">
+            <label class="radio-inline">
+            <input type="radio" name="spRadio" value="wc" ng-model = "algorithm"> WordCount
+            </label>
+            <label class="radio-inline">
+            <input type="radio" name="spRadio" value="pr" ng-model = "algorithm"> PageRank
+            </label>
+          </div>
+        </div>
+        
+        <h3>Ratio:</h3>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9">
+            <label class="radio-inline">
+            <input type="radio" name="ratioRadio" value="30%" ng-model = "ratio"> 30%
+            </label>
+            <label class="radio-inline">
+            <input type="radio" name="ratioRadio"  value="60%" ng-model = "ratio"> 60%
+            </label>
+            <label class="radio-inline">
+            <input type="radio" name="ratioRadio" value="100%" ng-model = "ratio" > 100%
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-3">
+          <button type="run" class="btn btn-primary" ng-click="run()">Run</button>
+          </div>
+        </div>
+         <div class="form-group">
+          <div class="col-sm-10 ">
+          <h3>Results:</h3>
+             <label for="ioNumI">IONumber:</label>
+             <p>{{spark.ioNum}}</p>
+             <label for="proTimeI">Processing Time:</label>
+             <p>{{spark.proTime}}</p>
+          </div>
+        </div>
+      </div> 
+       
+      <div ng-show="tab === 3" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+         <div zingchart id="chart-1" zc-json="myJsonIO" zc-width="500px" zc-height="500px"></div>
+         <div zingchart id="chart-2" zc-json="myJsonProcTime" zc-width="500px" zc-height="500px"></div>
+         <button type="button" class="btn btn-primary" ng-click="show()">Show Comparison Result</button>
+      </div>  
+    </div>
+  </div>  
+  
+  <script>
+    var app = angular.module('myApp', ['zingchart-angularjs']);
+
+      app.controller('DashboardCtrl', function($scope,$http) {
+      $scope.algorithm = "wc";
+      $scope.ratio = "100%";
+      $scope.hadoop = {"ioNum": 1, "proTime":0};
+      $scope.spark = {"ioNum": 1, "proTime":0};
+      
+      $scope.run = function() {
+  		$http({
+	            method: 'POST',
+	            url: '/afterSubmit',
+	            data: { "platform": $scope.platform, "algorithm": $scope.algorithm, "ratio": $scope.ratio}
+	            
+	         }).success(function(response){
+	         if(response.platform == "hadoop") {
+	             $scope.hadoop.ioNum = response.ioNum;
+	             $scope.hadoop.proTime = response.proTime;
+	         } else if(response.platform == "spark") {
+	             $scope.spark.ioNum = response.ioNum;
+	             $scope.spark.proTime = response.proTime;
+	         } else {
+	             alert("'platform' is undefined.");
+	         }
+	
+	        }).error(function(error){
+	            alert("error");
+	        }); 
+  	  };
+  	  
+  	  
+  	 $scope.myJsonIO = {
+      type : "bar",
+      title:{
+        backgroundColor : "transparent",
+        fontColor :"black",
+        text : "IO Number Comparison"
+      },
+      backgroundColor : "white",
+      
+      "scale-x":{
+	      values : ["Spark","Hadoop"],
+      },
+  
+      series : [
+        {
+          values : [10, 10],
+          backgroundColor : "#4DC0CF"
+        },
+        
+      ]
+    };
+    
+    
+     $scope.myJsonProcTime = {
+      type : "bar",
+      title:{
+        backgroundColor : "transparent",
+        fontColor :"black",
+        text : "Processing Time Comparison"
+      },
+      backgroundColor : "white",
+      
+      "scale-x":{
+	      values : ["Spark","Hadoop"],
+      },
+  
+      series : [
+        {
+          values : [10, 10],
+          backgroundColor : "#4DC0CF"
+        },    
+      ]
+    };
+    
+     $scope.show = function() {
+     $scope.myJsonIO.series[0].values.length = 0;
+     var val = $scope.spark.ioNum;
+     $scope.myJsonIO.series[0].values.push(val);
+     val = $scope.hadoop.ioNum;
+     $scope.myJsonIO.series[0].values.push(val);
+     
+     $scope.myJsonProcTime.series[0].values.length = 0;
+     var val = $scope.spark.proTime;
+     $scope.myJsonProcTime.series[0].values.push(val);
+     val = $scope.hadoop.proTime;
+     $scope.myJsonProcTime.series[0].values.push(val);
+  }
+  	 
+  
+  	});
+  	      
+  	
+  </script>
+<!-- Bootstrap core JavaScript
+  ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="../public/javascripts/jquery.min.js"></script>
+<script src="../public/javascripts/bootstrap.min.js"></script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script src="../public/javascripts/holder.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="../public/javascripts/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
